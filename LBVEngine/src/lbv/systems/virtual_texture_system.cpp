@@ -116,10 +116,10 @@ namespace LittleBigVulkan {
 			glm::vec2 vrMax = resourceMin + glm::vec2{ vr.size.width, vr.size.height };
 
 			glm::bvec2 isTouching = glm::greaterThan(resourceMin, vrMin) || glm::lessThan(resourceMax, vrMax);
-			if (isTouching.x) {
+			if (isTouching.x && offset.x < vrMax.x) {
 				offset.x = vrMax.x;
 			}
-			if (isTouching.y) {
+			if (isTouching.y && offset.y < vrMax.y) {
 				offset.y = vrMax.y;
 			}
 		}
