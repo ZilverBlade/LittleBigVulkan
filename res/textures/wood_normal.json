@@ -1,0 +1,10 @@
+{
+	"file": "wood_normal.png",
+	"channelCount": 3,
+	"virtualTextureData": {
+		"virtualTextureIndex": 0,
+		"textureSize": [512, 512],
+		"coordinates": [1024, 0]
+	},
+	"linearSampler": true
+}

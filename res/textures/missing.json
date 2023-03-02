@@ -1,0 +1,10 @@
+{
+	"file": "missing.png",
+	"channelCount": 3,
+	"virtualTextureData": {
+		"virtualTextureIndex": 0,
+		"textureSize": [256, 256],
+		"coordinates": [0, 0]
+	},
+	"linearSampler": false
+}

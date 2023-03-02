@@ -44,9 +44,6 @@ namespace LittleBigVulkan {
 			.writeImage(3, &resourceSystem->getMissingTexture2D()->getImageInfo())
 			.writeImage(4, &resourceSystem->getMissingTexture2D()->getImageInfo())
 			.writeImage(5, &resourceSystem->getMissingTexture2D()->getImageInfo())
-			.writeImage(6, &resourceSystem->getMissingTexture2D()->getImageInfo())
-			.writeImage(7, &resourceSystem->getMissingTexture2D()->getImageInfo())
-			.writeImage(8, &resourceSystem->getMissingTexture2D()->getImageInfo())
 			.build(descriptorSet);
 	}
 	LBVSurfaceMaterial::~LBVSurfaceMaterial() {
@@ -67,7 +64,6 @@ namespace LittleBigVulkan {
 		if (material["model"].get_string().value() == "unlit")
 			this->shadingModel = LBVSurfaceShadingModel::Unlit;
 
-		this->doubleSided = material["doubleSided"].get_bool().value();
 		this->translucent = material["translucent"].get_bool().value();
 		
 		const auto& config = material["config"];
@@ -88,16 +84,16 @@ namespace LittleBigVulkan {
 		if (config["shininess"].error() == simdjson::error_code::SUCCESS)
 			this->shininess = config["shininess"].get_double().value();
 	
-		if (config["diffuseTexture"].error() == simdjson::error_code::SUCCESS)
-			this->diffuseTexture = std::string(config["diffuseTexture"].get_string().value());
-		if (config["emissiveTexture"].error() == simdjson::error_code::SUCCESS)
-			this->emissiveTexture = std::string(config["emissiveTexture"].get_string().value());
-		if (config["normalTexture"].error() == simdjson::error_code::SUCCESS)
-			this->normalTexture = std::string(config["normalTexture"].get_string().value());
-		if (config["specularTexture"].error() == simdjson::error_code::SUCCESS)
-			this->specularTexture = std::string(config["specularTexture"].get_string().value());
+		if (config["diffuseMap"].error() == simdjson::error_code::SUCCESS)
+			this->diffuseMap = std::string(config["diffuseMap"].get_string().value());
+		if (config["emissiveMap"].error() == simdjson::error_code::SUCCESS)
+			this->emissiveMap = std::string(config["emissiveMap"].get_string().value());
+		if (config["normalMap"].error() == simdjson::error_code::SUCCESS)
+			this->normalMap = std::string(config["normalMap"].get_string().value());
+		if (config["specularMap"].error() == simdjson::error_code::SUCCESS)
+			this->specularMap = std::string(config["specularMap"].get_string().value());
 		if (config["opacityMask"].error() == simdjson::error_code::SUCCESS)
-			this->maskTexture = std::string(config["opacityMask"].get_string().value());
+			this->opacityMask = std::string(config["opacityMask"].get_string().value());
 
 		if (material["uvScale"].error() == simdjson::error_code::SUCCESS)
 			this->uvScale = { 
@@ -134,11 +130,11 @@ namespace LittleBigVulkan {
 		bufferInfo.shadingModelFlag = static_cast<uint32_t>(this->shadingModel);
 
 		uint32_t textureFlags = 0;
-		if (diffuseTexture) textureFlags |= SURFACE_MATERIAL_TEXTURE_DIFFUSE_BIT;
-		if (emissiveTexture) textureFlags |= SURFACE_MATERIAL_TEXTURE_EMISSIVE_BIT;
-		if (normalTexture) textureFlags |= SURFACE_MATERIAL_TEXTURE_NORMAL_BIT;
-		if (specularTexture) textureFlags |= SURFACE_MATERIAL_TEXTURE_SPECULAR_BIT;
-		if (maskTexture) textureFlags |= SURFACE_MATERIAL_TEXTURE_MASK_BIT;
+		if (diffuseMap) textureFlags |= SURFACE_MATERIAL_TEXTURE_DIFFUSE_BIT;
+		if (emissiveMap) textureFlags |= SURFACE_MATERIAL_TEXTURE_EMISSIVE_BIT;
+		if (normalMap) textureFlags |= SURFACE_MATERIAL_TEXTURE_NORMAL_BIT;
+		if (specularMap) textureFlags |= SURFACE_MATERIAL_TEXTURE_SPECULAR_BIT;
+		if (opacityMask) textureFlags |= SURFACE_MATERIAL_TEXTURE_MASK_BIT;
 		bufferInfo.textureFlags = textureFlags;
 
 		paramBuffer->writeToBuffer(&bufferInfo, sizeof(SurfaceMaterialBufferInfo));
@@ -158,11 +154,11 @@ namespace LittleBigVulkan {
 			.writeImage(4, &resourceSystem->getMissingTexture2D()->getImageInfo())
 			.writeImage(5, &resourceSystem->getMissingTexture2D()->getImageInfo());
 
-		if (diffuseTexture) writer.writeImage(1, &resourceSystem->getTexture2D({diffuseTexture, true, true})->getImageInfo());
-		if (emissiveTexture) writer.writeImage(2, &resourceSystem->getTexture2D({ emissiveTexture, true, true })->getImageInfo());
-		if (normalTexture) writer.writeImage(3, &resourceSystem->getTexture2D({ normalTexture, false, true })->getImageInfo());
-		if (specularTexture) writer.writeImage(4, &resourceSystem->getTexture2D({ specularTexture, false, true })->getImageInfo());
-		if (maskTexture) writer.writeImage(5, &resourceSystem->getTexture2D({ maskTexture, false, true })->getImageInfo());
+		if (diffuseMap) writer.writeImage(1, &resourceSystem->getTexture2D({ diffuseMap, true, true})->getImageInfo());
+		if (emissiveMap) writer.writeImage(2, &resourceSystem->getTexture2D({ emissiveMap, true, true })->getImageInfo());
+		if (normalMap) writer.writeImage(3, &resourceSystem->getTexture2D({ normalMap, false, true })->getImageInfo());
+		if (specularMap) writer.writeImage(4, &resourceSystem->getTexture2D({ specularMap, false, true })->getImageInfo());
+		if (opacityMask) writer.writeImage(5, &resourceSystem->getTexture2D({ opacityMask, false, true })->getImageInfo());
 
 		writer.build(descriptorSet);
 	}

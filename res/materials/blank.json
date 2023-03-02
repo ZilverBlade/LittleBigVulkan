@@ -9,6 +9,5 @@
 	},
 	"uvScale": [ 1.0, 1.0 ],
 	"uvOffset": [ 0, 0 ],
-	"translucent": false,
-	"doubleSided": true
+	"translucent": false
 }

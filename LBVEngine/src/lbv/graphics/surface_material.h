@@ -31,26 +31,21 @@ namespace LittleBigVulkan {
 
 		LBVSurfaceShadingModel shadingModel = LBVSurfaceShadingModel::Lit;
 
-		ResourceID diffuseTexture{};
-		ResourceID emissiveTexture{};
-		ResourceID normalTexture{};
-		ResourceID specularTexture{};
-		ResourceID maskTexture{};
+		ResourceID diffuseMap{};
+		ResourceID emissiveMap{};
+		ResourceID normalMap{};
+		ResourceID specularMap{};
+		ResourceID opacityMask{};
 
 		glm::vec3 diffuse{ 1.f };
 		glm::vec3 emissive{ 0.f };
 		float specular = 1.0f;
 		float shininess = 1.0f;
-		float metallicFactor = 1.0f;
-		float ambientOcclusionFactor = 1.0f;
-
-		float clearCoatFactor = 1.0f;
-		float clearCoatRoughnessFactor = 0.0f;
+		float normalStrength = 1.0f;
 
 		glm::vec2 uvScale{ 1.f };
 		glm::vec2 uvOffset{ 0.f };
 
-		bool doubleSided = false;
 		bool translucent = false;
 	private:
 		void writeDescriptor();

@@ -1,0 +1,10 @@
+{
+	"file": "wood_specular.png",
+	"channelCount": 1,
+	"virtualTextureData": {
+		"virtualTextureIndex": 1,
+		"textureSize": [512, 512],
+		"coordinates": [512, 0]
+	},
+	"linearSampler": true
+}

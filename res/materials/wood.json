@@ -1,0 +1,17 @@
+{
+	"name": "MissingMaterial",
+	"class": "surface",
+	"model": "lit",
+	"config": {
+		"diffuse": [ 1, 1, 1 ],
+		"diffuseMap": "res/textures/wood_diffuse.json",
+		"specular": 1.0,
+		"specularMap": "res/textures/wood_specular.json",
+		"shininess": 64
+		"normalMap": "res/textures/wood_normal.json",
+		"normalStrength": 1.0
+	},
+	"uvDefaultScale": [ 1.0, 1.0 ],
+	"uvDefaultOffset": [ 0, 0 ],
+	"translucent": false
+}
