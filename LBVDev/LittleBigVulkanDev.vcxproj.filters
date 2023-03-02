@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="apps">
+      <UniqueIdentifier>{992B947C-8562-950D-2E4F-7B101A65110F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="apps\tests">
+      <UniqueIdentifier>{3BA5651B-275D-A768-9064-80C47C3B4259}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\lbvd\apps\app.h">
+      <Filter>apps</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lbvd\apps\tests\window_test.h">
+      <Filter>apps\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lbvd\apps\vulkan_base.h">
+      <Filter>apps</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\lbvd\apps\app.cpp">
+      <Filter>apps</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbvd\apps\tests\window_test.cpp">
+      <Filter>apps\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbvd\apps\vulkan_base.cpp">
+      <Filter>apps</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbvd\main.cpp" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+{
+	"name": "MissingMaterial",
+	"class": "surface",
+	"model": "lit",
+	"config": {
+		"diffuseTexture": "res/textures/missing.png",
+		"diffuse": [ 1, 1, 1 ],
+		"specular": 0.5,
+		"shininess": 64
+	},
+	"uvScale": [ 2.0, 2.0 ],
+	"uvOffset": [ 0, 0 ],
+	"translucent": false,
+	"doubleSided": true
+}

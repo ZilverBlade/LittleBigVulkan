@@ -1,0 +1,14 @@
+{
+	"name": "BlankMaterial",
+	"class": "surface",
+	"model": "lit",
+	"config": {
+		"diffuse": [ 1, 1, 1 ],
+		"specular": 0.5,
+		"shininess": 64
+	},
+	"uvScale": [ 1.0, 1.0 ],
+	"uvOffset": [ 0, 0 ],
+	"translucent": false,
+	"doubleSided": true
+}
