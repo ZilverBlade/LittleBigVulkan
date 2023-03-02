@@ -4,7 +4,9 @@ namespace LittleBigVulkan {
 	VirtualTexture::VirtualTexture(LBVDevice& device, LBVDescriptorPool& descriptorPool, VkExtent2D size, VkFormat format) 
 		: lbvDevice(device), lbvDescriptorPool(descriptorPool), virtualTextureSize(size), virtualTextureFormat(format) {
 	
-	   
+		createImage();
+		createImageView();
+		createSampler();
 	}
 	VirtualTexture::~VirtualTexture() {
 		vkDestroyImage(lbvDevice.getDevice(), virtualTexture, nullptr);
@@ -114,6 +116,8 @@ namespace LittleBigVulkan {
 
 			glm::vec2 vrMin = { vr.offset.x, vr.offset.y };
 			glm::vec2 vrMax = resourceMin + glm::vec2{ vr.size.width, vr.size.height };
+
+			// in hindsight this probably isnt effective as it might shift the slot to the previously compared slot
 
 			glm::bvec2 isTouching = glm::greaterThan(resourceMin, vrMin) || glm::lessThan(resourceMax, vrMax);
 			if (isTouching.x && offset.x < vrMax.x) {
