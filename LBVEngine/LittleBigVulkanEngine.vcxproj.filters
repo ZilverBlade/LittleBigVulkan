@@ -160,6 +160,9 @@
       <Filter>vkapi</Filter>
     </ClInclude>
     <ClInclude Include="src\lbv\window.h" />
+    <ClInclude Include="src\lbv\systems\virtual_texture_system.h">
+      <Filter>systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lbv\controllers\camera_controller.cpp">
@@ -244,5 +247,8 @@
       <Filter>vkapi</Filter>
     </ClCompile>
     <ClCompile Include="src\lbv\window.cpp" />
+    <ClCompile Include="src\lbv\systems\virtual_texture_system.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

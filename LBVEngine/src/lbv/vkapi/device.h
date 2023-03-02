@@ -75,6 +75,7 @@ namespace LittleBigVulkan {
 		VkCommandBuffer beginSingleTimeCommands();
 		void endSingleTimeCommands(VkCommandBuffer commandBuffer);
 		void copyBuffer(VkCommandBuffer commandBuffer, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size, VkDeviceSize srcOffset = 0, VkDeviceSize dstOffset = 0);
+		void copyImage(VkCommandBuffer commandBuffer, VkExtent3D extent, VkImage srcImage, VkImageLayout srcLayout, VkImageSubresourceLayers srcSubresourceLayers, VkOffset3D srcOffset, VkImage dstImage, VkImageLayout dstLayout, VkImageSubresourceLayers dstSubresourceLayers, VkOffset3D dstOffset);
 		void copyBufferToImage(VkCommandBuffer commandBuffer, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height, uint32_t layerCount);
 		void copyImageToBuffer(VkCommandBuffer commandBuffer, VkImage image, VkImageLayout layout, VkBuffer buffer, uint32_t width, uint32_t height, uint32_t layerCount, uint32_t mipLevel);
 		void transitionImageLayout(VkCommandBuffer commandBuffer, VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t mipLevels, uint32_t layerCount);

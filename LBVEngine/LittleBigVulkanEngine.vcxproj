@@ -128,6 +128,7 @@
     <ClInclude Include="src\lbv\systems\post_fx\fx\ppfx_screen_correct.h" />
     <ClInclude Include="src\lbv\systems\post_fx\post_processing_fx.h" />
     <ClInclude Include="src\lbv\systems\resource_system.h" />
+    <ClInclude Include="src\lbv\systems\virtual_texture_system.h" />
     <ClInclude Include="src\lbv\utils\matrix_math.h" />
     <ClInclude Include="src\lbv\utils\resid.h" />
     <ClInclude Include="src\lbv\utils\uuid.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\lbv\systems\post_fx\fx\ppfx_screen_correct.cpp" />
     <ClCompile Include="src\lbv\systems\post_fx\post_processing_fx.cpp" />
     <ClCompile Include="src\lbv\systems\resouce_system.cpp" />
+    <ClCompile Include="src\lbv\systems\virtual_texture_system.cpp" />
     <ClCompile Include="src\lbv\utils\resid.cpp" />
     <ClCompile Include="src\lbv\utils\uuid.cpp" />
     <ClCompile Include="src\lbv\vkapi\buffer.cpp" />

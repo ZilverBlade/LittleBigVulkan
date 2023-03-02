@@ -76,7 +76,7 @@ namespace LittleBigVulkan {
         samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
         samplerInfo.unnormalizedCoordinates = VK_FALSE;
 
-        // this fields ulbvful for percentage close filtering for shadow maps
+        // this fields useful for percentage close filtering for shadow maps
         samplerInfo.compareEnable = VK_FALSE;
         samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
 

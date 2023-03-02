@@ -485,6 +485,16 @@ namespace LittleBigVulkan {
 		vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &bufferCopy);
 	}
 
+	void LBVDevice::copyImage(VkCommandBuffer commandBuffer, VkExtent3D extent, VkImage srcImage, VkImageLayout srcLayout, VkImageSubresourceLayers srcSubresourceLayers, VkOffset3D srcOffset, VkImage dstImage, VkImageLayout dstLayout, VkImageSubresourceLayers dstSubresourceLayers, VkOffset3D dstOffset) {
+		VkImageCopy imageCopy{};
+		imageCopy.extent = extent;
+		imageCopy.srcSubresource = srcSubresourceLayers;
+		imageCopy.srcOffset = srcOffset;
+		imageCopy.dstSubresource = dstSubresourceLayers;
+		imageCopy.dstOffset = dstOffset;
+		vkCmdCopyImage(commandBuffer, srcImage, srcLayout, dstImage, dstLayout, 1, &imageCopy);
+	}
+
 	void LBVDevice::copyBufferToImage(
 		VkCommandBuffer commandBuffer, VkBuffer buffer, VkImage image, uint32_t width, uint32_t height, uint32_t layerCount) {
 
