@@ -239,7 +239,7 @@ namespace LittleBigVulkan {
 
 	void LBVSwapChain::setImageCount(const VkSurfaceCapabilitiesKHR& capabilities) {
 		CSimpleIniA ini{};
-		ini.LoadFile("res/config/lbv.ini");
+		ini.LoadFile("res/config/engine.ini");
 		imageCount = ini.GetLongValue("DISPLAY", "SwapChainImageCount");
 
 		imageCount = std::clamp(imageCount, capabilities.minImageCount, capabilities.maxImageCount);
@@ -249,7 +249,7 @@ namespace LittleBigVulkan {
 	VkSurfaceFormatKHR LBVSwapChain::choolbvSwapSurfaceFormat(
 		const std::vector<VkSurfaceFormatKHR>& availableFormats) {
 		CSimpleIniA ini{};
-		ini.LoadFile("res/config/lbv.ini");
+		ini.LoadFile("res/config/engine.ini");
 		bool highbitcol = ini.GetBoolValue("DISPLAY", "SwapChain10Bit");
 
 		VkSurfaceFormatKHR finalFormat{};
@@ -272,23 +272,23 @@ namespace LittleBigVulkan {
 
 	VkPresentModeKHR LBVSwapChain::choolbvSwapPrelbvntMode(const std::vector<VkPresentModeKHR>& availablePrelbvntModes) {
 		CSimpleIniA ini{};
-		ini.LoadFile("res/config/lbv.ini");
+		ini.LoadFile("res/config/engine.ini");
 		bool vsync = ini.GetBoolValue("DISPLAY", "VerticalSync");
 		if (vsync == false) {
 			for (const auto& availablePrelbvntMode : availablePrelbvntModes) {
 				if (availablePrelbvntMode == VK_PRESENT_MODE_MAILBOX_KHR) {
-					LBVLOG_INF("Prelbvnt mode: Mailbox");
+					LBVLOG_INF("Present mode: Mailbox");
 					return VK_PRESENT_MODE_MAILBOX_KHR;
 				} else if (availablePrelbvntMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
-					LBVLOG_INF("Prelbvnt mode: Immediate");
+					LBVLOG_INF("Present mode: Immediate");
 					return VK_PRESENT_MODE_IMMEDIATE_KHR;
 				}
 			}
 		} else {
-			LBVLOG_INF("Prelbvnt mode: V-Sync");
+			LBVLOG_INF("Present mode: V-Sync");
 			return  VK_PRESENT_MODE_FIFO_KHR;
 		}
-		LBVLOG_ERR("Invalid prelbvnt mode!");
+		LBVLOG_ERR("Invalid present mode!");
 	}
 
 	VkExtent2D LBVSwapChain::choolbvSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) {

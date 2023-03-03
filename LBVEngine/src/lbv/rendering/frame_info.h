@@ -5,7 +5,7 @@
 #include <lbv/ecs/level.h>
 
 namespace LittleBigVulkan {
-	class LBVAPI ResourceSystem;
+	class ResourceSystem;
 	struct FrameInfo {
 		VkCommandBuffer commandBuffer;
 		uint32_t frameIndex;

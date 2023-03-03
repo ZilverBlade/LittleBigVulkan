@@ -3,6 +3,8 @@
 #include <chrono>
 #include <lbv/rendering/camera.h>
 #include <lbv/systems/resource_system.h>
+#include <lbv/systems/rendering/forward_render_system.h>
+#include <lbv/systems/rendering/light_system.h>
 #include <lbv/systems/post_fx/fx/ppfx_screen_correct.h>
 #include <lbv/controllers/camera_controller.h>
 #include <lbv/graphics/surface_material.h>
@@ -15,88 +17,52 @@ namespace LittleBigVulkan::Apps {
 		level = std::make_shared<Level>();
 		glm::vec2 resolution = { 1280, 720 };
 		
-		Actor cameraActor = level->createActor("camera actor");
-		
-		LBVFramebufferAttachmentCreateInfo depthAttachmentCreateInfo{};
-		depthAttachmentCreateInfo.dimensions = glm::ivec3(resolution, 1);
-		depthAttachmentCreateInfo.framebufferFormat = VK_FORMAT_D32_SFLOAT;
-		depthAttachmentCreateInfo.framebufferType = LBVFramebufferAttachmentType::Depth;
-		depthAttachmentCreateInfo.imageAspect = VK_IMAGE_ASPECT_DEPTH_BIT;
-		depthAttachmentCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		depthAttachmentCreateInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-		depthAttachmentCreateInfo.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-		depthAttachmentCreateInfo.sampleCount = VK_SAMPLE_COUNT_1_BIT;
-		depthAttachmentCreateInfo.linearFiltering = false;
-		LBVFramebufferAttachment* depthAttachment = new LBVFramebufferAttachment(lbvDevice, depthAttachmentCreateInfo);
+		Actor cameraActor = level->createActor("some kind of camera actor");
+		Actor skyActor = level->createActor("some kind of sky");
+		Actor shapeActor = level->createActor("some kind of object");
 
-		LBVFramebufferAttachmentCreateInfo colorAttachmentCreateInfo{};
-		colorAttachmentCreateInfo.dimensions = glm::ivec3(resolution, 1);
-		colorAttachmentCreateInfo.framebufferFormat = VK_FORMAT_R16G16B16A16_SFLOAT;
-		colorAttachmentCreateInfo.framebufferType = LBVFramebufferAttachmentType::Color;
-		colorAttachmentCreateInfo.imageAspect = VK_IMAGE_ASPECT_COLOR_BIT;
-		colorAttachmentCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		colorAttachmentCreateInfo.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-		colorAttachmentCreateInfo.layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		colorAttachmentCreateInfo.sampleCount = VK_SAMPLE_COUNT_1_BIT;
-		colorAttachmentCreateInfo.linearFiltering = false;
-		LBVFramebufferAttachment* colorAttachment = new LBVFramebufferAttachment(lbvDevice, colorAttachmentCreateInfo);
+		VkSampleCountFlagBits msaa = VK_SAMPLE_COUNT_4_BIT;
 
-		LBVAttachmentInfo depthAttachmentInfo{};
-		depthAttachmentInfo.framebufferAttachment = depthAttachment;
-		depthAttachmentInfo.clear.depth = { 1.0, 0 };
-		depthAttachmentInfo.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-		depthAttachmentInfo.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-
-		LBVAttachmentInfo colorAttachmentInfo{};
-		colorAttachmentInfo.framebufferAttachment = colorAttachment;
-		colorAttachmentInfo.clear.color = { 0.0, 0.0, 0.0, 1.0 };
-		colorAttachmentInfo.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-		colorAttachmentInfo.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-
-		LBVRenderPass* renderPass = new LBVRenderPass(lbvDevice, { depthAttachmentInfo, colorAttachmentInfo });
-		LBVFramebuffer* framebuffer = new LBVFramebuffer(lbvDevice, renderPass, { depthAttachment, colorAttachment });
-
-		LBVPushConstant push = LBVPushConstant(sizeof(glm::mat4), VK_SHADER_STAGE_VERTEX_BIT);
-		LBVPipelineLayout* pipelineLayout = new LBVPipelineLayout(lbvDevice, { push.getRange() }, { globalUBODescriptorLayout->getDescriptorSetLayout() });
-
-		LBVGraphicsPipelineConfigInfo pipelineConfigInfo{};
-		pipelineConfigInfo.enableShapeDescriptions();
-		pipelineConfigInfo.setSampleCount(VK_SAMPLE_COUNT_1_BIT);
-		//pipelineConfigInfo.setCullMode(VK_CULL_MODE_BACK_BIT);
-		pipelineConfigInfo.renderPass = renderPass->getRenderPass();
-		pipelineConfigInfo.pipelineLayout = pipelineLayout->getPipelineLayout();
-		LBVGraphicsPipeline* renderPipeline = new LBVGraphicsPipeline(
+		RenderSystem* renderSystem = new ForwardRenderSystem(
 			lbvDevice,
-			{ LBVShader(LBVShaderType::Vertex, "res/shaders/spirv/shape.vsh.spv"), LBVShader(LBVShaderType::Fragment, "res/shaders/spirv/forward_shading.fsh.spv") },
-			pipelineConfigInfo
+			resolution,
+			{ globalUBODescriptorLayout->getDescriptorSetLayout(), sceneSSBODescriptorLayout->getDescriptorSetLayout() },
+			msaa
 		);
+		LightSystem lightSystem{};
 
 		PostFX::Effect* screenCorrection = new PostFX::ScreenCorrection(
 			lbvDevice,
 			resolution,
 			*staticPool,
-			colorAttachment,
+			renderSystem->getColorAttachment(),
 			lbvSwapChain
 		);
 
 		LBVCamera camera{};
 		camera.setPerspectiveProjection(50.0f, 1.0f, 0.1f, 32.f);
 		cameraActor.getTransform().translation = { 0.0, -3.0, 0.0 };
+		Controllers::CameraController controller{};
+
+		skyActor.addComponent<SkyComponent>();
+		skyActor.getTransform().rotation = { 0.7, 0.0, 2.2 };
+		
+		auto squareShape = LBVShape::Builder()
+			.addTriangle({ glm::vec2{-1.0, -1.0}, glm::vec2{-1.0, 1.0}, glm::vec2{1.0, 1.0} }) // not sure why the winding order screws up and generates back faces
+			.addTriangle({ glm::vec2{1.0, 1.0}, glm::vec2{1.0, -1.0}, glm::vec2{-1.0, -1.0} })
+			.setDepth(0.5f)
+			.build();
+		std::shared_ptr<LBVShape> square3D = std::make_shared<LBVShape>(lbvDevice, squareShape);
+
+		shapeActor.addComponent<ShapeComponent>();
+		shapeActor.getComponent<ShapeComponent>().shape = std::move(square3D);
+
 
 		std::vector<std::unique_ptr<LBVCommandBuffer>> commandBuffers{};
 		commandBuffers.resize(lbvSwapChain->getImageCount());
 		for (auto& cb : commandBuffers) {
 			cb = std::make_unique<LBVCommandBuffer>(lbvDevice);
 		}
-
-		auto shapeData = LBVShape::Builder()
-			.addTriangle({ glm::vec2{-1.0, -1.0}, glm::vec2{-1.0, 1.0}, glm::vec2{1.0, 1.0} }) // not sure why the winding order screws up and generates back faces
-			.addTriangle({ glm::vec2{1.0, 1.0}, glm::vec2{1.0, -1.0}, glm::vec2{-1.0, -1.0} })
-			.setDepth(0.5f)
-			.build();
-		std::unique_ptr<LBVShape> square3D = std::make_unique<LBVShape>(lbvDevice, shapeData);
-
-		Controllers::CameraController controller{};
 
 		auto oldTime = std::chrono::high_resolution_clock::now();
 		while (!lbvWindow.shouldClose()) {
@@ -112,17 +78,17 @@ namespace LittleBigVulkan::Apps {
 			camera.setPerspectiveProjection(70.0f, lbvSwapChain->extentAspectRatio(), 0.01f, 128.f);
 
 
-			uint32_t frameIndex = lbvSwapChain->getImageIndex();
-			if (VkResult result = lbvSwapChain->acquireNextImage(&frameIndex); result == VK_SUCCESS) {
-				VkCommandBuffer commandBuffer = commandBuffers[frameIndex]->getCommandBuffer();
-				commandBuffers[frameIndex]->begin();
+			uint32_t imageIndex = lbvSwapChain->getImageIndex();
+			if (VkResult result = lbvSwapChain->acquireNextImage(&imageIndex); result == VK_SUCCESS) {
+				VkCommandBuffer commandBuffer = commandBuffers[imageIndex]->getCommandBuffer();
+				commandBuffers[imageIndex]->begin();
 
 				FrameInfo frameInfo{};
 				frameInfo.level = level;
 				frameInfo.frameTime = frameTime;
-				frameInfo.frameIndex = frameIndex;
-				frameInfo.globalUBO = renderData[frameIndex].uboDescriptorSet;
-				frameInfo.sceneSSBO = renderData[frameIndex].ssboDescriptorSet;
+				frameInfo.frameIndex = imageIndex;
+				frameInfo.globalUBO = renderData[imageIndex].uboDescriptorSet;
+				frameInfo.sceneSSBO = renderData[imageIndex].ssboDescriptorSet;
 				frameInfo.commandBuffer = commandBuffer;
 				frameInfo.resourceSystem = nullptr;
 
@@ -133,38 +99,28 @@ namespace LittleBigVulkan::Apps {
 				ubo.invProjMatrix = camera.getInverseProjection();
 				ubo.viewProjMatrix = ubo.projMatrix * ubo.viewMatrix;
 
-				renderData[frameIndex].uboBuffer->writeToBuffer(&ubo);
-				renderData[frameIndex].uboBuffer->flush();
+				renderData[imageIndex].uboBuffer->writeToBuffer(&ubo);
+				renderData[imageIndex].uboBuffer->flush();
 
-				renderPass->beginRenderPass(commandBuffer, framebuffer);
-				renderPipeline->bind(frameInfo.commandBuffer);
-				vkCmdBindDescriptorSets(
-					frameInfo.commandBuffer,
-					VK_PIPELINE_BIND_POINT_GRAPHICS,
-					pipelineLayout->getPipelineLayout(),
-					0,
-					1,
-					&frameInfo.globalUBO,
-					0,
-					nullptr
-				);
-				glm::mat4 identity(1.0f);
-				push.push(commandBuffer, pipelineLayout->getPipelineLayout(), &identity);
-				square3D->bind(commandBuffer);
-				square3D->draw(commandBuffer);
+				lightSystem.update(frameInfo, *renderData[imageIndex].sceneSSBO);
+				renderData[imageIndex].ssboBuffer->writeToBuffer(renderData[imageIndex].sceneSSBO.get());
+				renderData[imageIndex].ssboBuffer->flush();
 
-				renderPass->endRenderPass(commandBuffer);
 
+				renderSystem->renderEarlyDepth(frameInfo);
+				renderSystem->beginOpaquePass(frameInfo);
+				renderSystem->renderOpaque(frameInfo);
+				renderSystem->endOpaquePass(frameInfo);
 
 				lbvSwapChain->beginRenderPass(commandBuffer);
 				screenCorrection->render(frameInfo);
 				lbvSwapChain->endRenderPass(commandBuffer);
 
-				commandBuffers[frameIndex]->end();
+				commandBuffers[imageIndex]->end();
 
-				lbvRenderer->submitCommandBuffers({ commandBuffers[frameIndex].get() });
-				lbvRenderer->submitQueue(lbvSwapChain->getSubmitInfo(&frameIndex), lbvSwapChain->getFence(frameIndex));
-				lbvSwapChain->present(lbvRenderer->getQueue(), &frameIndex);
+				lbvRenderer->submitCommandBuffers({ commandBuffers[imageIndex].get() });
+				lbvRenderer->submitQueue(lbvSwapChain->getSubmitInfo(&imageIndex), lbvSwapChain->getFence(imageIndex));
+				lbvSwapChain->present(lbvRenderer->getQueue(), &imageIndex);
 			}
 		}
 		vkDeviceWaitIdle(lbvDevice.getDevice());

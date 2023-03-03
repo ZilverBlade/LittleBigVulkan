@@ -15,11 +15,9 @@ struct PointLight {
 };
 
 layout (set = 1, binding = 0) readonly buffer SceneSSBO {
-	SkyLight[16] skyLights;
-	DirectionalLight directionalLights[16];
-	PointLight pointLights[512];
-	uint skyLightCount;
-	uint directionalLightCount;
+	SkyLight skyLight;
+	DirectionalLight directionalLight;
+	PointLight pointLights[256];
 	uint pointLightCount;
 } scene;
 #endif

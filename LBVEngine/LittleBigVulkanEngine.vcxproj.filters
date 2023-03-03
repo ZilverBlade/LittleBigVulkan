@@ -25,6 +25,9 @@
     <Filter Include="systems\post_fx\fx">
       <UniqueIdentifier>{9C5D9507-8841-565D-F1A1-50B0DDA440DF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="systems\rendering">
+      <UniqueIdentifier>{EA0FB04E-5626-AEE4-9F9D-39060BF37E6C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="utils">
       <UniqueIdentifier>{169C8510-82B0-ADC1-4B32-5121B705AAF2}</UniqueIdentifier>
     </Filter>
@@ -43,7 +46,7 @@
     <ClInclude Include="src\lbv\ecs\components.h">
       <Filter>ecs</Filter>
     </ClInclude>
-    <ClInclude Include="src\lbv\ecs\components\directional_light_component.h">
+    <ClInclude Include="src\lbv\ecs\components\sky_component.h">
       <Filter>ecs\components</Filter>
     </ClInclude>
     <ClInclude Include="src\lbv\ecs\components\id_component.h">
@@ -55,10 +58,7 @@
     <ClInclude Include="src\lbv\ecs\components\point_light_component.h">
       <Filter>ecs\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\lbv\ecs\components\sky_light_component.h">
-      <Filter>ecs\components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lbv\ecs\components\skybox_component.h">
+    <ClInclude Include="src\lbv\ecs\components\shape_component.h">
       <Filter>ecs\components</Filter>
     </ClInclude>
     <ClInclude Include="src\lbv\ecs\components\transform_component.h">
@@ -106,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="src\lbv\systems\post_fx\post_processing_fx.h">
       <Filter>systems\post_fx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lbv\systems\rendering\forward_render_system.h">
+      <Filter>systems\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lbv\systems\rendering\light_system.h">
+      <Filter>systems\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lbv\systems\rendering\render_system.h">
+      <Filter>systems\rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\lbv\systems\resource_system.h">
       <Filter>systems</Filter>
@@ -206,6 +215,15 @@
     </ClCompile>
     <ClCompile Include="src\lbv\systems\post_fx\post_processing_fx.cpp">
       <Filter>systems\post_fx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbv\systems\rendering\forward_render_system.cpp">
+      <Filter>systems\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbv\systems\rendering\light_system.cpp">
+      <Filter>systems\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbv\systems\rendering\render_system.cpp">
+      <Filter>systems\rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\lbv\systems\resouce_system.cpp">
       <Filter>systems</Filter>
