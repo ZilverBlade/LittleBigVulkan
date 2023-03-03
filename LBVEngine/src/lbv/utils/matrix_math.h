@@ -1,7 +1,6 @@
 #pragma once
 #include <lbv/dll.h>
-
-#include <cstdint>
+#include <glm/glm.hpp>
 namespace LittleBigVulkan {
     namespace Math {
         static glm::mat4 calculateYXZ(glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale) {

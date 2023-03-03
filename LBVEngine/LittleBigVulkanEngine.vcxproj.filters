@@ -163,6 +163,12 @@
     <ClInclude Include="src\lbv\systems\virtual_texture_system.h">
       <Filter>systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\lbv\graphics\shape.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lbv\utils\hash.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lbv\controllers\camera_controller.cpp">
@@ -249,6 +255,9 @@
     <ClCompile Include="src\lbv\window.cpp" />
     <ClCompile Include="src\lbv\systems\virtual_texture_system.cpp">
       <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbv\graphics\shape.cpp">
+      <Filter>graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
