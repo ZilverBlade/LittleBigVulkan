@@ -1,5 +1,5 @@
 #include <lbvd/apps/tests/window_test.h>
-//#include <lbvd/apps/renderers/render_app.h>
+#include <lbvd/apps/tests/shape_test.h>
 #include <lbv/log.h>
 
 #ifdef _WIN32	
@@ -10,7 +10,7 @@
 
 using namespace LittleBigVulkan;
 int main() {
-	Apps::App* app = new Apps::WindowTest("LittleBigVulkan v1.0");
+	Apps::App* app = new Apps::ShapeTest("LittleBigVulkan v1.0");
 
 	try {
 		app->run();

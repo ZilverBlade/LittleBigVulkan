@@ -112,10 +112,12 @@ project "LittleBigVulkanDev"
    
    libdirs {
 	  "./lib",
+      VULKAN_SDK.."/Lib",
 	  "vendor/glfw-3.3.7/lib-vc2019", 
 	  "vendor/imgui/lib",
    }
    links {
+      "vulkan-1",
 	  "glfw3dll",
 	  "LittleBigVulkanEngine",
    }

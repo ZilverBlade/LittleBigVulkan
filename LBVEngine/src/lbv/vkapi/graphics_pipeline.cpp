@@ -81,7 +81,7 @@ namespace LittleBigVulkan {
 		dynamicStateInfo.pNext = nullptr;
 	}
 
-	void LBVGraphicsPipelineConfigInfo::enableVertexDescriptions() {
+	void LBVGraphicsPipelineConfigInfo::enableMeshDescriptions() {
 		attributeDescriptions = {
 			{ 0, 0, VK_FORMAT_R32G32B32_SFLOAT, 0 }, // position
 			{ 1, 1, VK_FORMAT_R32G32_SFLOAT, 0 },    // uv
@@ -93,6 +93,17 @@ namespace LittleBigVulkan {
 			{ 1, 8, VK_VERTEX_INPUT_RATE_VERTEX },  // uv
 			{ 2, 12, VK_VERTEX_INPUT_RATE_VERTEX }, // normal
 			{ 3, 12, VK_VERTEX_INPUT_RATE_VERTEX }, // tangent
+		};
+	}
+
+	void LBVGraphicsPipelineConfigInfo::enableShapeDescriptions() {
+		attributeDescriptions = {
+			{ 0, 0, VK_FORMAT_R32G32B32_SFLOAT, 0 }, // position
+			{ 1, 0, VK_FORMAT_R32G32_SFLOAT, 12 },    // uv
+			{ 2, 0, VK_FORMAT_R32G32B32_SFLOAT, 20 } // normal
+		};
+		bindingDescriptions = {
+			{ 0, 12 + 8 + 12, VK_VERTEX_INPUT_RATE_VERTEX }, // vertex
 		};
 	}
 
@@ -123,7 +134,7 @@ namespace LittleBigVulkan {
 		multisampleInfo.sampleShadingEnable = static_cast<VkBool32>(samples > VK_SAMPLE_COUNT_1_BIT);
 	}
 
-	void LBVGraphicsPipelineConfigInfo::reverlbvDepth() {
+	void LBVGraphicsPipelineConfigInfo::reverseDepth() {
 		depthStencilInfo.depthCompareOp = VK_COMPARE_OP_GREATER_OR_EQUAL;
 	}
 

@@ -71,8 +71,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3dll.lib;lbvengine_d.lib;ImGui_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\lib;..\vendor\glfw-3.3.7\lib-vc2019;..\vendor\imgui\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;glfw3dll.lib;lbvengine_d.lib;ImGui_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;D:\GameEngines\Vulkan-1.3.211.0\Lib;..\vendor\glfw-3.3.7\lib-vc2019;..\vendor\imgui\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -95,17 +95,19 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3dll.lib;lbvengine.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\lib;..\vendor\glfw-3.3.7\lib-vc2019;..\vendor\imgui\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;glfw3dll.lib;lbvengine.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib;D:\GameEngines\Vulkan-1.3.211.0\Lib;..\vendor\glfw-3.3.7\lib-vc2019;..\vendor\imgui\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\lbvd\apps\app.h" />
+    <ClInclude Include="src\lbvd\apps\tests\shape_test.h" />
     <ClInclude Include="src\lbvd\apps\tests\window_test.h" />
     <ClInclude Include="src\lbvd\apps\vulkan_base.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lbvd\apps\app.cpp" />
+    <ClCompile Include="src\lbvd\apps\tests\shape_test.cpp" />
     <ClCompile Include="src\lbvd\apps\tests\window_test.cpp" />
     <ClCompile Include="src\lbvd\apps\vulkan_base.cpp" />
     <ClCompile Include="src\lbvd\main.cpp" />

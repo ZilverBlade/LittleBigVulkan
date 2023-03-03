@@ -4,7 +4,7 @@
 #include <lbv/vkapi/shader.h>
 namespace LittleBigVulkan {
 
-	struct LBVGraphicsPipelineConfigInfo {
+	struct LBVAPI LBVGraphicsPipelineConfigInfo {
 		LBVGraphicsPipelineConfigInfo(uint32_t colorAttachmentCount = 1);
 		LBVGraphicsPipelineConfigInfo(const LBVGraphicsPipelineConfigInfo&) = delete;
 		LBVGraphicsPipelineConfigInfo& operator=(const LBVGraphicsPipelineConfigInfo&) = delete;
@@ -23,13 +23,14 @@ namespace LittleBigVulkan {
 		VkPipelineLayout pipelineLayout = nullptr;
 		VkRenderPass renderPass = nullptr;
 
-		void enableVertexDescriptions();
+		void enableMeshDescriptions();
+		void enableShapeDescriptions();
 
 		void enableAlphaBlending(uint32_t attachment = 0, VkBlendOp blendOp = VK_BLEND_OP_ADD);
 		void wireframe(float thickness = 1.0f);
 		void setCullMode(VkCullModeFlags cullMode);
 		void setSampleCount(VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT);
-		void reverlbvDepth();
+		void reverseDepth();
 		void disableDepthTest();
 		void disableDepthWrite();
 	};

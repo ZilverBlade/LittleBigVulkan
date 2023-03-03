@@ -49,7 +49,7 @@ namespace LittleBigVulkan {
 
         VkResult acquireNextImage(uint32_t* imageIndex);
         VkSubmitInfo getSubmitInfo(uint32_t* imageIndex);
-        VkResult prelbvnt(VkQueue queue, uint32_t* imageIndex);
+        VkResult present(VkQueue queue, uint32_t* imageIndex);
 
         VkFence getFence(uint32_t imageIndex) {
             return inFlightFences[imageIndex];

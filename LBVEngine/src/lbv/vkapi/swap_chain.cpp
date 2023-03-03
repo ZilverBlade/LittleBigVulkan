@@ -71,19 +71,19 @@ namespace LittleBigVulkan {
 		vkResetFences(lbvDevice.getDevice(), 1, &inFlightFences[currentFrame]);
 		return submitInfo;
 	}
-	VkResult LBVSwapChain::prelbvnt(VkQueue queue, uint32_t* imageIndex) {
-		VkPresentInfoKHR prelbvntInfo = {};
-		prelbvntInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	VkResult LBVSwapChain::present(VkQueue queue, uint32_t* imageIndex) {
+		VkPresentInfoKHR presentInfo = {};
+		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+		   
+		presentInfo.waitSemaphoreCount = 1;
+		presentInfo.pWaitSemaphores = &renderFinishedSemaphores[currentFrame];
+		   
+		presentInfo.swapchainCount = 1;
+		presentInfo.pSwapchains = &swapChain;
 
-		prelbvntInfo.waitSemaphoreCount = 1;
-		prelbvntInfo.pWaitSemaphores = &renderFinishedSemaphores[currentFrame];
-		
-		prelbvntInfo.swapchainCount = 1;
-		prelbvntInfo.pSwapchains = &swapChain;
+		presentInfo.pImageIndices = imageIndex;
 
-		prelbvntInfo.pImageIndices = imageIndex;
-
-		VkResult result = vkQueuePresentKHR(queue, &prelbvntInfo);
+		VkResult result = vkQueuePresentKHR(queue, &presentInfo);
 		currentFrame = (currentFrame + 1) % imageCount;
 		return result;
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include "shape.h"
+#include <glm/gtx/hash.hpp>
 #include <lbv/utils/hash.h>
 
 namespace std {
@@ -41,16 +42,16 @@ namespace LittleBigVulkan {
 		for (auto& yface : frontFaces) {
 			for (int i = 0; i < 2; i++) { // generate perpendicular faces by chunks of 2 vertices at a time
 				// vertices must be ordered clockwise
-				zFaces.emplace_back(
-					glm::vec3{ yface.points[i].x, yface.points[i].y, 0.0 },
-					glm::vec3{ yface.points[i + 1].x, yface.points[i + 1].y, depth },
-					glm::vec3{ yface.points[i + 1].x, yface.points[i + 1].y, 0.0 }
-				);
-				zFaces.emplace_back(
+				zFaces.push_back({
 					glm::vec3{ yface.points[i].x, yface.points[i].y, 0.0 },
 					glm::vec3{ yface.points[i].x, yface.points[i].y, depth },
 					glm::vec3{ yface.points[i + 1].x, yface.points[i + 1].y, depth }
-				);
+				});
+				zFaces.push_back({
+					glm::vec3{ yface.points[i].x, yface.points[i].y, 0.0 },
+					glm::vec3{ yface.points[i + 1].x, yface.points[i + 1].y, depth },
+					glm::vec3{ yface.points[i + 1].x, yface.points[i + 1].y, 0.0 }
+				});
 			}
 		}
 
@@ -76,7 +77,7 @@ namespace LittleBigVulkan {
 		return mesh;
 	}
 	LBVShape::LBVShape(LBVDevice& device, const LBVShapeMesh& mesh) : lbvDevice(device) {
-		std::map<Vertex, uint16_t> vertexMap;
+		std::unordered_map<Vertex, uint16_t> vertexMap;
 		std::vector<Vertex> verticesUnique;
 		std::vector<uint16_t> indices;
 
@@ -86,8 +87,10 @@ namespace LittleBigVulkan {
 				indices.push_back(iter->second);
 			} else {
 				assert(vertexMap.size() <= UINT16_MAX && "Shape index exceeded limit!");
-				vertexMap[vertex] = vertexMap.size();
+				uint16_t index = vertexMap.size();
+				vertexMap[vertex] = index;
 				verticesUnique.push_back(vertex);
+				indices.push_back(index);
 			}
 		}	
 		indexCount = indices.size();
@@ -115,7 +118,7 @@ namespace LittleBigVulkan {
 			lbvDevice,
 			sizeof(T),
 			data.size(),
-			VK_BUFFER_USAGE_TRANSFER_SRC_BIT | indexBuffer ? VK_BUFFER_USAGE_INDEX_BUFFER_BIT : VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+			VK_BUFFER_USAGE_TRANSFER_SRC_BIT | (indexBuffer ? VK_BUFFER_USAGE_INDEX_BUFFER_BIT : VK_BUFFER_USAGE_VERTEX_BUFFER_BIT),
 			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
 		);
 		stagingBuffer->map();
@@ -125,7 +128,7 @@ namespace LittleBigVulkan {
 			lbvDevice,
 			sizeof(T),
 			data.size(),
-			VK_BUFFER_USAGE_TRANSFER_DST_BIT | indexBuffer ? VK_BUFFER_USAGE_INDEX_BUFFER_BIT : VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+			VK_BUFFER_USAGE_TRANSFER_DST_BIT | (indexBuffer ? VK_BUFFER_USAGE_INDEX_BUFFER_BIT : VK_BUFFER_USAGE_VERTEX_BUFFER_BIT),
 			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
 		);
 		VkCommandBuffer commandBuffer = lbvDevice.beginSingleTimeCommands();

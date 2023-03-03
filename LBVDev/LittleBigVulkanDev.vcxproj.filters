@@ -12,6 +12,9 @@
     <ClInclude Include="src\lbvd\apps\app.h">
       <Filter>apps</Filter>
     </ClInclude>
+    <ClInclude Include="src\lbvd\apps\tests\shape_test.h">
+      <Filter>apps\tests</Filter>
+    </ClInclude>
     <ClInclude Include="src\lbvd\apps\tests\window_test.h">
       <Filter>apps\tests</Filter>
     </ClInclude>
@@ -22,6 +25,9 @@
   <ItemGroup>
     <ClCompile Include="src\lbvd\apps\app.cpp">
       <Filter>apps</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lbvd\apps\tests\shape_test.cpp">
+      <Filter>apps\tests</Filter>
     </ClCompile>
     <ClCompile Include="src\lbvd\apps\tests\window_test.cpp">
       <Filter>apps\tests</Filter>

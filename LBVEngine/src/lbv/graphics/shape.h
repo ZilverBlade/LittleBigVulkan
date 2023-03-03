@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include <array>
 
@@ -16,10 +16,10 @@ namespace LittleBigVulkan {
 		Z
 	};
 	
-	struct LBVShapeFace {
+	struct LBVAPI LBVShapeFace {
 		std::array<glm::vec2, 3> points;
 	};
-	struct Vertex {
+	struct LBVAPI Vertex {
 		glm::vec3 position;
 		glm::vec2 uv;
 		glm::vec3 normal;
@@ -27,14 +27,14 @@ namespace LittleBigVulkan {
 			return position == other.position && normal == other.normal && uv == other.uv;
 		}
 	};
-	struct LBVShapeMesh {
+	struct LBVAPI LBVShapeMesh {
 		std::vector<Vertex> vertices{};
 	};
 	
-
 	class LBVAPI LBVShape {
 	public:
-		struct Builder {
+		struct LBVAPI Builder {
+			Builder() = default;
 			std::vector<LBVShapeFace> frontFaces;
 
 			Builder& addTriangle(std::array<glm::vec2, 3> points);
